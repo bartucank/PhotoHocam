@@ -4,6 +4,9 @@ package com.metuncc.PhotoHocam.service;
 import com.metuncc.PhotoHocam.controller.request.UserRequest;
 import com.metuncc.PhotoHocam.domain.User;
 import com.metuncc.PhotoHocam.repository.UserRepository;
+import com.metuncc.PhotoHocam.security.JwtUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,4 +33,11 @@ public class PhotoHocamService {
         userRepository.save(user);
         return;
     }
+
+    public Long getCurrentUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        JwtUserDetails jwtUser = (JwtUserDetails) auth.getPrincipal();
+        return jwtUser.getId();
+    }
+
 }
