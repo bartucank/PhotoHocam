@@ -20,6 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * This class filtering authentication based on JWT that already in header of the request.
+ * Actually we take request (HttpServletRequest) and take "Authorization" header of this object.
+ * If this is not null, we split token part of the header, then validate this token. If it is not valid or it is not
+ * available on the request, we deny request.
+ *
+ * This filtering operation is explained on Spring Security documentation.
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired

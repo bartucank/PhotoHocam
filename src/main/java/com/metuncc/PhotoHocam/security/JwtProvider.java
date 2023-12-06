@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * That class generates JWT token for specific user with SECRET and expired time (in sec).
+ * */
 @Component
 public class JwtProvider {
 

@@ -18,6 +18,7 @@ import java.util.List;
  * */
 @Data
 @Entity
+@Table(name = "sysUser")
 public class User {
     /**
      * ID. This should be unique.
@@ -36,7 +37,7 @@ public class User {
     /**
      * Friend list.
      * */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<User> friends;
 
 

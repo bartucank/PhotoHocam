@@ -3,6 +3,7 @@ package com.metuncc.PhotoHocam.controller;
 
 import com.metuncc.PhotoHocam.controller.request.UserRequest;
 import com.metuncc.PhotoHocam.controller.response.LoginResponse;
+import com.metuncc.PhotoHocam.dto.Imagedto;
 import com.metuncc.PhotoHocam.security.JwtProvider;
 import com.metuncc.PhotoHocam.service.PhotoHocamService;
 import org.springframework.http.HttpStatus;
@@ -11,21 +12,22 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
-@RequestMapping(value ="/api/auth", produces = "application/json;charset=UTF-8")
-public class AuthController {
+@RequestMapping(value ="/api", produces = "application/json;charset=UTF-8")
+public class Controller {
     private AuthenticationManager authenticationManager;
     private JwtProvider jwtTokenProvider;
     private PhotoHocamService photoHocamService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtProvider jwtTokenProvider) {
+    public Controller(AuthenticationManager authenticationManager, JwtProvider jwtTokenProvider, PhotoHocamService photoHocamService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.photoHocamService = photoHocamService;
     }
 
     @PostMapping("/login")
@@ -49,6 +51,28 @@ public class AuthController {
            photoHocamService.createUser(userRequest);
            return new ResponseEntity<>(true,HttpStatus.OK);
        }catch (Exception e){
-           return new ResponseEntity<>(true,HttpStatus.BAD_REQUEST);       }
+           return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);       }
+    }
+
+
+    @PostMapping("/addFriend")
+    public ResponseEntity<Boolean> addFriend(@RequestParam Long id){
+        photoHocamService.sendFriendRequest(id);
+        return new ResponseEntity<>(true,HttpStatus.OK);
+    }
+    @PostMapping("/approveFriendRequest")
+    public ResponseEntity<Boolean> approveFriendRequest(@RequestParam Long id){
+        photoHocamService.approveFriendRequest(id);
+        return new ResponseEntity<>(true,HttpStatus.OK);
+    }
+    @PostMapping("/sendImage")
+    public ResponseEntity<Boolean> sendImage(@RequestBody MultipartFile file,
+                                             @RequestParam Long userid){
+        photoHocamService.sendImage(file, userid);
+        return new ResponseEntity<>(true,HttpStatus.OK);
+    }
+    @GetMapping("/getImagelist")
+    public List<Imagedto> getImagelist(){
+        return photoHocamService.getImagelist();
     }
 }

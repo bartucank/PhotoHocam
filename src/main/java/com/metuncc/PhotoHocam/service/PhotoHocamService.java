@@ -33,6 +33,13 @@ public class PhotoHocamService {
     private FriendRequestRepository friendRequestRepository;
     private PasswordEncoder passwordEncoder;
 
+    public PhotoHocamService(UserRepository userRepository, ImageRepository imageRepository, FriendRequestRepository friendRequestRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
+        this.friendRequestRepository = friendRequestRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public void createUser(UserRequest userRequest) {
         if(Objects.isNull(userRequest) || Objects.isNull(userRequest.getUsername()) || Objects.isNull(userRequest.getPass()) ){
             throw new RuntimeException("Unexpected Error");
@@ -43,13 +50,14 @@ public class PhotoHocamService {
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setPassword(passwordEncoder.encode(userRequest.getPass()));
+        user.setFriends(new ArrayList<>());
         userRepository.save(user);
         return;
     }
 
     public Long getCurrentUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        JwtUserDetails jwtUser = (JwtUserDetails) auth.getPrincipal();
+        User jwtUser = (User) auth.getPrincipal();
         return jwtUser.getId();
     }
 
