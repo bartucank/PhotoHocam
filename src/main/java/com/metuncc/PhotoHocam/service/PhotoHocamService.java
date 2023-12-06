@@ -18,12 +18,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.zip.Deflater;
 
 @Service
 public class PhotoHocamService {
@@ -70,10 +72,25 @@ public class PhotoHocamService {
             return false;
         }
         try {
-            String base64 = Base64.getEncoder().encodeToString(file.getBytes());
+
 
             Image img = new Image();
-            img.setData(base64);
+            var deflater = new Deflater();
+            deflater.setLevel(Deflater.BEST_COMPRESSION);
+            deflater.setInput(file.getBytes());
+            deflater.finish();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(file.getBytes().length);
+            byte[] tmp = new byte[4*1024];
+            while (!deflater.finished()) {
+                int size = deflater.deflate(tmp);
+                outputStream.write(tmp, 0, size);
+            }
+            try {
+                outputStream.close();
+            } catch (Exception e) {
+            }
+            img.setData( outputStream.toByteArray());
             img.setReceiver(receiver);
             img.setSender(sender);
 

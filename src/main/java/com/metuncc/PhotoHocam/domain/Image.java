@@ -21,8 +21,9 @@ public class Image {
     private User receiver;
 
     @Lob
-    @Column(length = 10000000)
-    private String data;
+    @Type(type = "org.hibernate.type.ImageType")
+
+    private byte[] data;
 
 
 
