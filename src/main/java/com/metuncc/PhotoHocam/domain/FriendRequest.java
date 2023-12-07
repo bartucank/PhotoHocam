@@ -15,8 +15,17 @@ import javax.persistence.*;
 public class FriendRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    /**
+     * id of friend request. unique
+     */
     private Long id;
+    /**
+     * id of the user who sends the friend request
+     */
     private Long sender;
+    /**
+     * id of the user who the friend request is sent to
+     */
     private Long receiver;
 
 }

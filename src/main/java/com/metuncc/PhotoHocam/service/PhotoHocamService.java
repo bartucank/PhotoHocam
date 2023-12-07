@@ -138,7 +138,11 @@ public class PhotoHocamService {
 
     }
 
-
+    /**
+     * Creates a friend request
+     * gets receiver id as parameter
+     * @param receiver
+     */
     public void sendFriendRequest(Long receiver){
         if(Objects.isNull(userRepository.getById(getCurrentUserId()))){
             throw new RuntimeException("User not found");
@@ -152,6 +156,13 @@ public class PhotoHocamService {
         friendRequestRepository.save(friendRequest);
         return;
     }
+
+    /**
+     * gets friend request id as parameter
+     * adds sender and receiver to each others friend list
+     * deletes friend request
+     * @param id
+     */
     public void approveFriendRequest(Long id){
         FriendRequest friendRequest = friendRequestRepository.getById(id);
         if(Objects.isNull(friendRequest)){
