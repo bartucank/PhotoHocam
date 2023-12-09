@@ -63,6 +63,13 @@ public class PhotoHocamService {
         return jwtUser.getId();
     }
 
+    /**
+     * first compresses the image and then sends it to the receiver specified by userID.
+     * @param file
+     * @param userID
+     * @return true if sent operation is successful, false if receiver not found
+     */
+
     public boolean sendImage(MultipartFile file, Long userID) {
 
         User receiver = userRepository.getById(userID);
@@ -105,11 +112,21 @@ public class PhotoHocamService {
         return true;
     }
 
+    /**
+     * deletes the image specified by its ID
+     * @param id
+     */
+
     public void deleteImage(Long id){
 
         imageRepository.deleteById(id);
 
     }
+
+    /**
+     * gets a list of the image objects sent by a user. Based on the sender's username.
+     * @return list of Imagedto, containing the username of the sender and the images they sent
+     */
     public List<Imagedto> getImagelist(){
 
         Long me = getCurrentUserId();
