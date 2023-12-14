@@ -24,9 +24,17 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/com.google.cloud/spring-cloud-gcp-dependencies
+	implementation group: 'com.google.cloud', name: 'spring-cloud-gcp-dependencies', version: '4.9.0', ext: 'pom'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin
+	implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '3.2.0'
+
+	// https://mvnrepository.com/artifact/org.projectlombok/lombok
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
@@ -37,7 +45,9 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.16.0-rc1'
 
 	implementation group: 'com.google.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '4.8.4'
-	implementation platform("com.google.cloud:spring-cloud-gcp-dependencies:4.8.5-SNAPSHOT")
+
+	implementation("com.google.cloud:spring-cloud-gcp-starter")
+
 
 }
 
@@ -47,4 +57,9 @@ tasks.named('bootBuildImage') {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jar {
+	enabled = false
+	archiveClassifier = ''
 }

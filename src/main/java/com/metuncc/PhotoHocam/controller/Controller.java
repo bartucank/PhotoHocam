@@ -4,6 +4,7 @@ package com.metuncc.PhotoHocam.controller;
 import com.metuncc.PhotoHocam.controller.request.UserRequest;
 import com.metuncc.PhotoHocam.controller.response.ImageListResponse;
 import com.metuncc.PhotoHocam.controller.response.LoginResponse;
+import com.metuncc.PhotoHocam.dto.ImageDTO;
 import com.metuncc.PhotoHocam.dto.ImageListDTO;
 import com.metuncc.PhotoHocam.security.JwtProvider;
 import com.metuncc.PhotoHocam.service.PhotoHocamService;

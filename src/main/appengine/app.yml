@@ -1,0 +1,12 @@
+runtime: java17
+entrypoint: java -Xmx64m -jar PhotoHocam.jar
+env: flex
+runtime_config:
+  jdk: openjdk17
+env_variables:
+  SPRING_PROFILES_ACTIVE: "gcp,mysql"
+handlers:
+  - url: /.*
+    script: this field is required, but ignored
+manual_scaling:
+  instances: 1

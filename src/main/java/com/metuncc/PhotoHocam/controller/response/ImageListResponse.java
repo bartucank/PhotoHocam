@@ -6,7 +6,15 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
+
 public class ImageListResponse {
     private List<ImageListDTO> imageListDTOList;
+
+    public List<ImageListDTO> getImageListDTOList() {
+        return imageListDTOList;
+    }
+
+    public void setImageListDTOList(List<ImageListDTO> imageListDTOList) {
+        this.imageListDTOList = imageListDTOList;
+    }
 }

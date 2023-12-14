@@ -9,13 +9,13 @@ import javax.persistence.*;
  * Image entity for PhotoHocam application.
  * this entity belongs to images.
  *
- * @author Nurberat Gökmen
+ * @author Nurberat Gokmen
  * @version 1.0.0
  */
 
 
 @Entity
-@Data
+
 public class Image {
 
 
@@ -54,5 +54,35 @@ public class Image {
     private byte[] data;
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
 }

@@ -9,8 +9,7 @@ import java.util.List;
  * this class is used for transferring the data of the image within the application
  */
 
-@Data
-public class Imagedto {
+public class ImageListDTO {
 
     /**
      * username of the user sent the image
@@ -21,4 +20,20 @@ public class Imagedto {
      * list of the images sent from the specified user
      */
     private List<Image> imageList;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
 }

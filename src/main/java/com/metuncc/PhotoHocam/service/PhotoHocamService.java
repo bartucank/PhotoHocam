@@ -6,7 +6,7 @@ import com.metuncc.PhotoHocam.domain.Image;
 import com.metuncc.PhotoHocam.domain.FriendRequest;
 import com.metuncc.PhotoHocam.domain.User;
 import com.metuncc.PhotoHocam.dto.ImageDTO;
-import com.metuncc.PhotoHocam.dto.Imagedto;
+import com.metuncc.PhotoHocam.dto.ImageListDTO;
 import com.metuncc.PhotoHocam.repository.ImageRepository;
 import com.metuncc.PhotoHocam.repository.FriendRequestRepository;
 import com.metuncc.PhotoHocam.repository.UserRepository;
@@ -117,22 +117,22 @@ public class PhotoHocamService {
      * gets a list of the image objects sent by a user. Based on the sender's username.
      * @return list of Imagedto, containing the username of the sender and the images they sent
      */
-    public List<Imagedto> getImagelist(){
+    public List<ImageListDTO> getImagelist(){
 
         Long me = getCurrentUserId();
         List<Image> imgs = imageRepository.getImages(me);
-        List<Imagedto> result = new ArrayList<>();
+        List<ImageListDTO> result = new ArrayList<>();
         for (Image img : imgs) {
 
             Boolean check = false;
-            for (Imagedto imagedto : result) {
-                if(imagedto.getUsername().equals(img.getSender().getUsername())){
+            for (ImageListDTO imglist : result) {
+                if(imglist.getUsername().equals(img.getSender().getUsername())){
                     check = true;
-                    imagedto.getImageList().add(img);
+                    imglist.getImageList().add(img);
                 }
             }
             if(!check){
-                Imagedto imagedto = new Imagedto();
+                ImageListDTO imagedto = new ImageListDTO();
                 imagedto.setUsername(img.getSender().getUsername());
                 imagedto.setImageList(new ArrayList<>());
                 imagedto.getImageList().add(img);
@@ -175,8 +175,16 @@ public class PhotoHocamService {
         if(Objects.isNull(friendRequest)){
             throw new RuntimeException("Friend request not found");
         }
+
         User sender = userRepository.getById(friendRequest.getSender());
+        if(Objects.isNull(sender)){
+            throw new RuntimeException("User not found");
+        }
         User receiver = userRepository.getById(friendRequest.getReceiver());
+        if(Objects.isNull(receiver)) {
+            throw new RuntimeException("User not found");
+        }
+
 
         if(Objects.isNull(sender.getFriends())){
             sender.setFriends(new ArrayList<>());

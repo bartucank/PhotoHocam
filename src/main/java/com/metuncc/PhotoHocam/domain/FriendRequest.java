@@ -7,10 +7,10 @@ import javax.persistence.*;
  * FriendRequest entity for PhotoHocam project.
  * This entity belongs to friend requests.
  *
- * @author doğukan akdağ
+ * @author dogukan akdag
  * @version 1.0.0
  * */
-@Data
+
 @Entity
 public class FriendRequest {
     @Id
@@ -28,4 +28,27 @@ public class FriendRequest {
      */
     private Long receiver;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getSender() {
+        return sender;
+    }
+
+    public void setSender(Long sender) {
+        this.sender = sender;
+    }
+
+    public Long getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Long receiver) {
+        this.receiver = receiver;
+    }
 }
