@@ -176,7 +176,13 @@ public class PhotoHocamService {
             throw new RuntimeException("Friend request not found");
         }
         User sender = userRepository.getById(friendRequest.getSender());
+        if(Objects.isNull(sender)){
+            throw new RuntimeException("User not found");
+        }
         User receiver = userRepository.getById(friendRequest.getReceiver());
+        if(Objects.isNull(receiver)){
+            throw new RuntimeException("User not found");
+        }
 
         if(Objects.isNull(sender.getFriends())){
             sender.setFriends(new ArrayList<>());
