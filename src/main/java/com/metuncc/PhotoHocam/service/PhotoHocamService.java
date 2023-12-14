@@ -6,7 +6,7 @@ import com.metuncc.PhotoHocam.domain.Image;
 import com.metuncc.PhotoHocam.domain.FriendRequest;
 import com.metuncc.PhotoHocam.domain.User;
 import com.metuncc.PhotoHocam.dto.ImageDTO;
-import com.metuncc.PhotoHocam.dto.ImageListDTO;
+import com.metuncc.PhotoHocam.dto.Imagedto;
 import com.metuncc.PhotoHocam.repository.ImageRepository;
 import com.metuncc.PhotoHocam.repository.FriendRequestRepository;
 import com.metuncc.PhotoHocam.repository.UserRepository;
