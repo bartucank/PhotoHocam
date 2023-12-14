@@ -76,9 +76,6 @@ PhotoHocam is an application designed for  photo sharing. Users can register, se
 
 1. In the friend's profile, click on the photo icon to share a photo.
 
-## Contributing
-
-We welcome contributions from the community. To contribute, please follow our [contribution guidelines](CONTRIBUTING.md).
 
 ## License
 
