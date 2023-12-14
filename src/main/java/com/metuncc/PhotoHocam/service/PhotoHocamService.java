@@ -102,58 +102,40 @@ public class PhotoHocamService {
         return true;
     }
 
+    /**
+     * deletes the image specified by its ID
+     * @param id
+     */
+
     public void deleteImage(Long id){
 
         imageRepository.deleteById(id);
 
     }
-    public List<ImageListDTO> getImagelist(){
+
+    /**
+     * gets a list of the image objects sent by a user. Based on the sender's username.
+     * @return list of Imagedto, containing the username of the sender and the images they sent
+     */
+    public List<Imagedto> getImagelist(){
 
         Long me = getCurrentUserId();
         List<Image> imgs = imageRepository.getImages(me);
-        List<ImageListDTO> result = new ArrayList<>();
+        List<Imagedto> result = new ArrayList<>();
         for (Image img : imgs) {
-            Boolean check = false;
-            for (ImageListDTO imageListDTO : result) {
-                if(imageListDTO.getUsername().equals(img.getSender().getUsername())){
-                    check = true;
-                    Inflater inflater = new Inflater();
-                    inflater.setInput(img.getData());
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(img.getData().length);
-                    byte[] tmp = new byte[4*1024];
-                    try {
-                        while (!inflater.finished()) {
-                            int count = inflater.inflate(tmp);
-                            outputStream.write(tmp, 0, count);
-                        }
-                        outputStream.close();
-                    } catch (Exception exception) {
-                    }
 
-                    imageListDTO.getImageList().add(new ImageDTO(outputStream.toByteArray()));
-                    break;
+            Boolean check = false;
+            for (Imagedto imagedto : result) {
+                if(imagedto.getUsername().equals(img.getSender().getUsername())){
+                    check = true;
+                    imagedto.getImageList().add(img);
                 }
             }
             if(!check){
-                ImageListDTO imageListDTO = new ImageListDTO();
-                imageListDTO.setUsername(img.getSender().getUsername());
-                imageListDTO.setImageList(new ArrayList<>());
-
-                Inflater inflater = new Inflater();
-                inflater.setInput(img.getData());
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(img.getData().length);
-                byte[] tmp = new byte[4*1024];
-                try {
-                    while (!inflater.finished()) {
-                        int count = inflater.inflate(tmp);
-                        outputStream.write(tmp, 0, count);
-                    }
-                    outputStream.close();
-                } catch (Exception exception) {
-                }
-
-                imageListDTO.getImageList().add(new ImageDTO(outputStream.toByteArray()));
-                result.add(imageListDTO);
+                Imagedto imagedto = new Imagedto();
+                imagedto.setUsername(img.getSender().getUsername());
+                imagedto.setImageList(new ArrayList<>());
+                imagedto.getImageList().add(img);
             }
 
 
@@ -163,7 +145,11 @@ public class PhotoHocamService {
 
     }
 
-
+    /**
+     * Creates a friend request
+     * gets receiver id as parameter
+     * @param receiver
+     */
     public void sendFriendRequest(Long receiver){
         if(Objects.isNull(userRepository.getById(getCurrentUserId()))){
             throw new RuntimeException("User not found");
@@ -177,6 +163,13 @@ public class PhotoHocamService {
         friendRequestRepository.save(friendRequest);
         return;
     }
+
+    /**
+     * gets friend request id as parameter
+     * adds sender and receiver to each others friend list
+     * deletes friend request
+     * @param id
+     */
     public void approveFriendRequest(Long id){
         FriendRequest friendRequest = friendRequestRepository.getById(id);
         if(Objects.isNull(friendRequest)){
