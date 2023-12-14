@@ -58,7 +58,7 @@ PhotoHocam is an application designed for  photo sharing. Users can register, se
    ```
    The application will be accessible at http://localhost:8080.
 
-   ## Usage
+## Usage
 
 ### User Registration
 
