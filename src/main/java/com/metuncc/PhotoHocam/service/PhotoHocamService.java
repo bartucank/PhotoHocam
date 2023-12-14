@@ -5,15 +5,13 @@ import com.metuncc.PhotoHocam.controller.request.UserRequest;
 import com.metuncc.PhotoHocam.domain.Image;
 import com.metuncc.PhotoHocam.domain.FriendRequest;
 import com.metuncc.PhotoHocam.domain.User;
-import com.metuncc.PhotoHocam.dto.Imagedto;
+import com.metuncc.PhotoHocam.dto.ImageDTO;
+import com.metuncc.PhotoHocam.dto.ImageListDTO;
 import com.metuncc.PhotoHocam.repository.ImageRepository;
 import com.metuncc.PhotoHocam.repository.FriendRequestRepository;
 import com.metuncc.PhotoHocam.repository.UserRepository;
-import com.metuncc.PhotoHocam.security.JwtUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,11 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 @Service
 public class PhotoHocamService {
@@ -110,25 +107,53 @@ public class PhotoHocamService {
         imageRepository.deleteById(id);
 
     }
-    public List<Imagedto> getImagelist(){
+    public List<ImageListDTO> getImagelist(){
 
         Long me = getCurrentUserId();
         List<Image> imgs = imageRepository.getImages(me);
-        List<Imagedto> result = new ArrayList<>();
+        List<ImageListDTO> result = new ArrayList<>();
         for (Image img : imgs) {
-
             Boolean check = false;
-            for (Imagedto imagedto : result) {
-                if(imagedto.getUsername().equals(img.getSender().getUsername())){
+            for (ImageListDTO imageListDTO : result) {
+                if(imageListDTO.getUsername().equals(img.getSender().getUsername())){
                     check = true;
-                    imagedto.getImageList().add(img);
+                    Inflater inflater = new Inflater();
+                    inflater.setInput(img.getData());
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(img.getData().length);
+                    byte[] tmp = new byte[4*1024];
+                    try {
+                        while (!inflater.finished()) {
+                            int count = inflater.inflate(tmp);
+                            outputStream.write(tmp, 0, count);
+                        }
+                        outputStream.close();
+                    } catch (Exception exception) {
+                    }
+
+                    imageListDTO.getImageList().add(new ImageDTO(outputStream.toByteArray()));
+                    break;
                 }
             }
             if(!check){
-                Imagedto imagedto = new Imagedto();
-                imagedto.setUsername(img.getSender().getUsername());
-                imagedto.setImageList(new ArrayList<>());
-                imagedto.getImageList().add(img);
+                ImageListDTO imageListDTO = new ImageListDTO();
+                imageListDTO.setUsername(img.getSender().getUsername());
+                imageListDTO.setImageList(new ArrayList<>());
+
+                Inflater inflater = new Inflater();
+                inflater.setInput(img.getData());
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(img.getData().length);
+                byte[] tmp = new byte[4*1024];
+                try {
+                    while (!inflater.finished()) {
+                        int count = inflater.inflate(tmp);
+                        outputStream.write(tmp, 0, count);
+                    }
+                    outputStream.close();
+                } catch (Exception exception) {
+                }
+
+                imageListDTO.getImageList().add(new ImageDTO(outputStream.toByteArray()));
+                result.add(imageListDTO);
             }
 
 
@@ -166,11 +191,11 @@ public class PhotoHocamService {
         sender.getFriends().add(receiver);
         userRepository.save(sender);
 
-        if(Objects.isNull(receiver.getFriends())){
-            receiver.setFriends(new ArrayList<>());
-        }
-        receiver.getFriends().add(sender);
-        userRepository.save(receiver);
+//        if(Objects.isNull(receiver.getFriends())){
+//            receiver.setFriends(new ArrayList<>());
+//        }
+//        receiver.getFriends().add(sender);
+//        userRepository.save(receiver);
 
         friendRequestRepository.delete(friendRequest);
     }

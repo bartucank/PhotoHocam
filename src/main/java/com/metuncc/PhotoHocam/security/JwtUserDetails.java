@@ -53,4 +53,13 @@ public class JwtUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public JwtUserDetails(Long id, String username, String password) {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority("user"));
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.authorities=authorityList;
+    }
 }

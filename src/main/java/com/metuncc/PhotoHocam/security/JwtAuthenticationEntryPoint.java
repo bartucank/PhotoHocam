@@ -15,6 +15,7 @@ import java.io.IOException;
  * @see org.springframework.security.web.AuthenticationEntryPoint
  * **/
 @Component
+
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

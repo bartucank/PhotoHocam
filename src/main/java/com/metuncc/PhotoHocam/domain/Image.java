@@ -22,7 +22,6 @@ public class Image {
 
     @Lob
     @Type(type = "org.hibernate.type.ImageType")
-
     private byte[] data;
 
 

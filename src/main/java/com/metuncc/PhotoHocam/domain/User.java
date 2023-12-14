@@ -41,10 +41,4 @@ public class User {
     private List<User> friends;
 
 
-    public JwtUserDetails toJwtUserDetails(){
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("user"));
-        return new JwtUserDetails(getId(), getUsername(), getPassword(), authorityList);
-    }
-
 }

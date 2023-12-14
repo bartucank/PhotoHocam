@@ -2,8 +2,9 @@ package com.metuncc.PhotoHocam.controller;
 
 
 import com.metuncc.PhotoHocam.controller.request.UserRequest;
+import com.metuncc.PhotoHocam.controller.response.ImageListResponse;
 import com.metuncc.PhotoHocam.controller.response.LoginResponse;
-import com.metuncc.PhotoHocam.dto.Imagedto;
+import com.metuncc.PhotoHocam.dto.ImageListDTO;
 import com.metuncc.PhotoHocam.security.JwtProvider;
 import com.metuncc.PhotoHocam.service.PhotoHocamService;
 import org.springframework.http.HttpStatus;
@@ -55,24 +56,26 @@ public class Controller {
     }
 
 
-    @PostMapping("/addFriend")
+    @PostMapping("/user/addFriend")
     public ResponseEntity<Boolean> addFriend(@RequestParam Long id){
         photoHocamService.sendFriendRequest(id);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
-    @PostMapping("/approveFriendRequest")
+    @PostMapping("/user/approveFriendRequest")
     public ResponseEntity<Boolean> approveFriendRequest(@RequestParam Long id){
         photoHocamService.approveFriendRequest(id);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
-    @PostMapping("/sendImage")
+    @PostMapping("/user/sendImage")
     public ResponseEntity<Boolean> sendImage(@RequestBody MultipartFile file,
                                              @RequestParam Long userid){
         photoHocamService.sendImage(file, userid);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
-    @GetMapping("/getImagelist")
-    public List<Imagedto> getImagelist(){
-        return photoHocamService.getImagelist();
+    @GetMapping("/user/getImagelist")
+    public ResponseEntity<ImageListResponse> getImagelist(){
+        ImageListResponse result = new ImageListResponse();
+        result.setImageListDTOList(photoHocamService.getImagelist());
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }

@@ -6,8 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Imagedto {
+public class ImageListDTO {
 
     private String username;
-    private List<Image> imageList;
+    private List<ImageDTO> imageList;
 }

@@ -27,10 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        return user.toJwtUserDetails();
+        return new JwtUserDetails(user.getId(),user.getUsername(),user.getPassword());
     }
     public UserDetails loadUserById(Long id) throws UsernameNotFoundException {
         User user = userRepository.getById(id);
-        return user.toJwtUserDetails();
+        return new JwtUserDetails(user.getId(),user.getUsername(),user.getPassword());
     }
 }
