@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photohocamui/pages/SplashScreen.dart';
+import 'package:photohocamui/pages/login.dart';
+import 'package:photohocamui/pages/register.dart';
 import 'package:photohocamui/utils/cameraprovider.dart';
 import 'package:provider/provider.dart';
 void main() {
@@ -20,8 +22,8 @@ class MyApp extends StatelessWidget {
         ),
         home: const SplashScreen(),
         routes: {
-          '/login': (context) =>  SplashScreen(),
-          '/register': (context) => SplashScreen(),
+          '/login': (context) =>  LoginScreen(),
+          '/register': (context) => RegisterScreen(),
           '/cam': (context) => SplashScreen(),
         },
       ),
