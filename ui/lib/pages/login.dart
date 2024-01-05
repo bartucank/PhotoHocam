@@ -1,23 +1,60 @@
 import 'package:flutter/material.dart';
 
+import '../utils/ApiService.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
-
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  final ApiService apiService = ApiService();
+
+  Future<void> invalid() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Sorry :('),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Invalid username / password!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Try Again'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _login() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
-    // API call here
-    print(username + password);
-    Navigator.pushReplacementNamed(context, '/cam');
+    Map<String, dynamic> body = {
+      'username': username,
+      'pass': password,
+    };
+    apiService.loginRequest(body).then((value) => {
+          if (value)
+            {Navigator.pushReplacementNamed(context, '/cam')}
+          else
+            {invalid()}
+        });
   }
 
   @override
@@ -34,12 +71,12 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.yellow,
               constraints: BoxConstraints.expand(height: 75),
               child: Center(
-                child: Image.asset('assets/logo.png'),
+                child: Image.asset('assets/images/logo.png'),
               ),
             ),
             SizedBox(height: 65),
             Text(
-              "Log into Snapchat",
+              "Log into PhotoHocam",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 25.0,
@@ -56,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 cursorColor: Colors.green,
                 cursorWidth: 3.0,
                 decoration: InputDecoration(
-                  labelText: "USER NAME OR EMAIL",
+                  labelText: "USER NAME",
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   labelStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
                   focusColor: Colors.black,
@@ -102,13 +139,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Center(
                       child: Text(
-                        "Log In",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ))),
+                    "Log In",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ))),
             ),
           ],
         ),

@@ -21,5 +21,34 @@ class ApiService {
     await storage.write(key: 'jwt_token', value: token);
   }
 
+  Future<bool> loginRequest(dynamic body) async {
+      final response = await http.post(
+        Uri.parse('${Constants.apiBaseUrl}/api/login'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        saveJwtToken(jsonResponse['jwt']);
+        return true;
+      }
+      return false;
+    }
+    Future<bool> registerRequest(dynamic body) async {
+      final response = await http.post(
+        Uri.parse('${Constants.apiBaseUrl}/api/register'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    }
+
 
 }

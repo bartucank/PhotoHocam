@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/ApiService.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
@@ -11,12 +13,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  final ApiService apiService = ApiService();
+
+  Future<void> invalid() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Sorry :('),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Something went wrong :('),
+                Text('May be username already used from someone else. '),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Try Again'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> _login() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
-    // API call here
-    print(username + password);
-    Navigator.pushReplacementNamed(context, '/cam');
+    Map<String, dynamic> body = {
+      'username': username,
+      'pass': password,
+    };
+    apiService.registerRequest(body).then((value) => {
+      if (value)
+        {Navigator.pushReplacementNamed(context, '/login')}
+      else
+        {invalid()}
+    });
   }
 
   @override
@@ -33,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               color: Colors.yellow,
               constraints: BoxConstraints.expand(height: 75),
               child: Center(
-                child: Image.asset('assets/logo.png'),
+                child: Image.asset('assets/images/logo.png'),
               ),
             ),
             SizedBox(height: 65),
@@ -101,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   child: Center(
                       child: Text(
-                        "Log In",
+                        "Sign Up",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 25.0,
