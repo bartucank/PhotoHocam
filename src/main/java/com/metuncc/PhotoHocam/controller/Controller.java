@@ -4,6 +4,7 @@ package com.metuncc.PhotoHocam.controller;
 import com.metuncc.PhotoHocam.controller.request.UserRequest;
 import com.metuncc.PhotoHocam.controller.response.ImageListResponse;
 import com.metuncc.PhotoHocam.controller.response.LoginResponse;
+import com.metuncc.PhotoHocam.controller.response.UserDTOListResponse;
 import com.metuncc.PhotoHocam.dto.ImageDTO;
 import com.metuncc.PhotoHocam.dto.ImageListDTO;
 import com.metuncc.PhotoHocam.security.JwtProvider;
@@ -73,10 +74,22 @@ public class Controller {
         photoHocamService.sendImage(file, userid);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
-    @GetMapping("/user/getImagelist")
-    public ResponseEntity<ImageListResponse> getImagelist(){
-        ImageListResponse result = new ImageListResponse();
-        result.setImageListDTOList(photoHocamService.getImagelist());
+    @GetMapping("/user/getfriends")
+    public ResponseEntity<UserDTOListResponse> getfriends(){
+        UserDTOListResponse result = new UserDTOListResponse();
+        result.setUserDTOList(photoHocamService.getFriendList());
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+    @GetMapping("/user/getunfriends")
+    public ResponseEntity<UserDTOListResponse> getunfriends(){
+        UserDTOListResponse result = new UserDTOListResponse();
+        result.setUserDTOList(photoHocamService.getUnfriendList());
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+    @GetMapping("/user/getFriendRequestList")
+    public ResponseEntity<UserDTOListResponse> getFriendRequestList(){
+        UserDTOListResponse result = new UserDTOListResponse();
+        result.setUserDTOList(photoHocamService.getFriendRequestList());
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }

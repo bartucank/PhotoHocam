@@ -17,6 +17,11 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
     List<FriendRequest> findByReceiver(@Param("receiver")Long receiver);
 
     @Query("select u from FriendRequest u where u.sender=:sender")
-    List<FriendRequest> findBySender(@Param("sender")String sender);
+    List<FriendRequest> findBySender(@Param("sender")Long sender);
+
+
+    @Query("select u from FriendRequest u where u.sender=:sender and u.receiver=:receiver")
+    List<FriendRequest> findBySenderAndReceiver(@Param("sender")Long sender,
+                                     @Param("receiver")Long receiver);
 }
 

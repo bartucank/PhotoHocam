@@ -7,6 +7,7 @@ import com.metuncc.PhotoHocam.domain.FriendRequest;
 import com.metuncc.PhotoHocam.domain.User;
 import com.metuncc.PhotoHocam.dto.ImageDTO;
 import com.metuncc.PhotoHocam.dto.ImageListDTO;
+import com.metuncc.PhotoHocam.dto.UserDTO;
 import com.metuncc.PhotoHocam.repository.ImageRepository;
 import com.metuncc.PhotoHocam.repository.FriendRequestRepository;
 import com.metuncc.PhotoHocam.repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -200,5 +203,49 @@ public class PhotoHocamService {
 
         friendRequestRepository.delete(friendRequest);
     }
+
+
+    public List<UserDTO> getFriendList(){
+        User user = userRepository.getById(getCurrentUserId());
+        List<User> friendList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(user.getFriends())){
+            friendList.addAll(user.getFriends());
+        }
+        List<User> otherSide = userRepository.findAll();
+        for (User user1 : otherSide) {
+            if(!CollectionUtils.isEmpty(user1.getFriends()) && user1.getFriends().contains(user)){
+                friendList.add(user1);
+            }
+        }
+        return friendList.stream().map(User::toDTO).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> getUnfriendList(){
+        User user = userRepository.getById(getCurrentUserId());
+        List<User> unfriendList = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        for (User user1 : users) {
+            if(!user1.getId().equals(user.getId()) && !user.getFriends().contains(user1) && !user1.getFriends().contains(user)){
+                if(CollectionUtils.isEmpty(friendRequestRepository.findBySenderAndReceiver(user.getId(),user1.getId())) &&
+                CollectionUtils.isEmpty(friendRequestRepository.findBySenderAndReceiver(user1.getId(),user.getId()))){
+                    unfriendList.add(user1);
+                }
+            }
+        }
+//        unfriendList.addAll(userRepository.getByUnFriend(user));
+        return unfriendList.stream().map(User::toDTO).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> getFriendRequestList(){
+        List<UserDTO> request = new ArrayList<>();
+        for (FriendRequest friendRequest : friendRequestRepository.findByReceiver(getCurrentUserId())) {
+            User user = userRepository.getById(friendRequest.getSender());
+            UserDTO dto = user.toDTO();
+            dto.setFriendRequestId(friendRequest.getId());
+            request.add(dto);
+        }
+        return request;
+    }
+
 
 }

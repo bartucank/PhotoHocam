@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.metuncc'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.8'
 
 java {
 	sourceCompatibility = '17'
@@ -24,16 +24,11 @@ repositories {
 }
 
 dependencies {
-	// https://mvnrepository.com/artifact/com.google.cloud/spring-cloud-gcp-dependencies
-	implementation group: 'com.google.cloud', name: 'spring-cloud-gcp-dependencies', version: '4.9.0', ext: 'pom'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin
-	implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '3.2.0'
 
-	// https://mvnrepository.com/artifact/org.projectlombok/lombok
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'

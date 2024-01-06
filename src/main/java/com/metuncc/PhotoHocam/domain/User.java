@@ -1,5 +1,6 @@
 
 package com.metuncc.PhotoHocam.domain;
+import com.metuncc.PhotoHocam.dto.UserDTO;
 import com.metuncc.PhotoHocam.security.JwtUserDetails;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -70,5 +71,12 @@ public class User {
 
     public void setFriends(List<User> friends) {
         this.friends = friends;
+    }
+
+    public UserDTO toDTO() {
+        UserDTO dto = new UserDTO();
+        dto.setId(getId());
+        dto.setName(getUsername());
+        return dto;
     }
 }
