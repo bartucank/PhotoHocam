@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.metuncc'
-version = '0.0.8'
+version = '0.1.0'
 
 java {
 	sourceCompatibility = '17'

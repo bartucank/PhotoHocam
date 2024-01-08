@@ -2,14 +2,14 @@ package com.metuncc.PhotoHocam.controller;
 
 
 import com.metuncc.PhotoHocam.controller.request.UserRequest;
-import com.metuncc.PhotoHocam.controller.response.ImageListResponse;
+import com.metuncc.PhotoHocam.controller.response.ImageListDTOListResponse;
 import com.metuncc.PhotoHocam.controller.response.LoginResponse;
 import com.metuncc.PhotoHocam.controller.response.UserDTOListResponse;
-import com.metuncc.PhotoHocam.dto.ImageDTO;
-import com.metuncc.PhotoHocam.dto.ImageListDTO;
 import com.metuncc.PhotoHocam.security.JwtProvider;
 import com.metuncc.PhotoHocam.service.PhotoHocamService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,8 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
-import java.util.List;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value ="/api", produces = "application/json;charset=UTF-8")
@@ -92,4 +94,19 @@ public class Controller {
         result.setUserDTOList(photoHocamService.getFriendRequestList());
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
+
+
+    @DeleteMapping("/deletePhoto")
+    public ResponseEntity<Boolean> deleteImage(@RequestParam Long id){
+        photoHocamService.deleteImage(id);
+        return new ResponseEntity<>(true,HttpStatus.OK);
+    }
+
+    @GetMapping("/user/getImagelist")
+    public ResponseEntity<ImageListDTOListResponse> getImagelist(){
+        ImageListDTOListResponse result = new ImageListDTOListResponse();
+        result.setList(photoHocamService.getImagelist());
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
 }
