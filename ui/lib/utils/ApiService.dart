@@ -1,10 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'Constants.dart';
 class ApiService {
   final FlutterSecureStorage storage = FlutterSecureStorage();
@@ -151,6 +148,7 @@ class ApiService {
 
   Future<bool> sendImage(String imagePath, int userId) async {
     try {
+      final jwtToken = await getJwtToken();
       File imageFile = File(imagePath);
       if (!imageFile.existsSync()) {
         throw Exception("File doesn't exist");
@@ -160,6 +158,7 @@ class ApiService {
       var request = http.MultipartRequest('POST', uri)
         ..fields['userid'] = userId.toString()
         ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+      request.headers['Authorization'] = 'Bearer '+jwtToken!;
 
       var response = await request.send();
       if (response.statusCode == 200) {
