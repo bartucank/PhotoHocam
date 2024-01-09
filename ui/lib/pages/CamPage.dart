@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:photohocamui/utils/ApiService.dart';
@@ -25,18 +28,24 @@ class _CamPageState extends State<CamPage> {
 
   Future<void> _takePicture(CameraController cameraController) async {
     final XFile? capturedImage = await cameraController.takePicture();
-
     if (capturedImage != null) {
       _capturedImagePath = capturedImage.path;
 
+      // Convert the captured image to base64
+      final List<int> imageBytes = await File(_capturedImagePath).readAsBytes();
+      final String base64String = base64Encode(imageBytes);
+
+
+      // Navigate to the view page
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ViewSnapPage(imagePath: capturedImage.path),
+          builder: (context) => ViewSnapPage(imagePath: base64String),
         ),
       );
     }
   }
+
 
 
   @override
@@ -111,6 +120,22 @@ class _CamPageState extends State<CamPage> {
                         shape: BoxShape.circle
                     ),
                     child: Icon(Icons.person, color: Colors.black,size: 25,),
+                  ),
+                )
+            ),
+            Positioned(
+                right: 100,
+                top: 40,
+                child: GestureDetector(
+                  onTap: ()=>Navigator.pushNamed(context, '/message'),
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: new BoxDecoration(
+                        color: Colors.grey.shade200,
+                        shape: BoxShape.circle
+                    ),
+                    child: Icon(Icons.messenger_outlined, color: Colors.black,size: 25,),
                   ),
                 )
             ),
