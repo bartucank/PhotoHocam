@@ -13,11 +13,11 @@ import javax.persistence.*;
 
 @Entity
 public class FriendRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     /**
      * id of friend request. unique
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     private Long id;
     /**
      * id of the user who sends the friend request

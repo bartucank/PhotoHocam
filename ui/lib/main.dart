@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photohocamui/pages/CamPage.dart';
 import 'package:photohocamui/pages/FriendPage.dart';
 import 'package:photohocamui/pages/FriendRequestPage.dart';
+import 'package:photohocamui/pages/MessagePage.dart';
 import 'package:photohocamui/pages/SplashScreen.dart';
 import 'package:photohocamui/pages/login.dart';
 import 'package:photohocamui/pages/register.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
           '/cam': (context) => CamPage(),
           '/unfriend': (context) => FriendPage(),
           '/friendrequest': (context) => FriendRequestPage(),
+          '/message': (context) => MessagesPage(),
 
         },
       ),

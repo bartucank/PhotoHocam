@@ -170,4 +170,42 @@ class ApiService {
       return false;
     }
   }
+
+  Future<List<dynamic>> getImagelist() async {
+    final jwtToken = await getJwtToken();
+    if (jwtToken != null) {
+      try {
+        final response = await http.get(
+          Uri.parse('${Constants.apiBaseUrl}/api/user/getImagelist'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $jwtToken',
+          },
+        );
+        final Map<String, dynamic>? responseData = json.decode(response.body);
+        return responseData!['list'];
+
+      } catch (e) {
+        throw Exception('');
+      }
+    } else {
+      throw Exception('JWT Token not found');
+    }
+  }
+
+  Future<void> deletePhoto(int id) async {
+    final jwtToken = await getJwtToken();
+    if (jwtToken != null) {
+      final response = await http.delete(
+        Uri.parse('${Constants.apiBaseUrl}/api/deletePhoto?id=$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+
+    }
+  }
+
 }
+
