@@ -32,8 +32,6 @@ class _MessagesPageState extends State<MessagesPage> {
   }
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +50,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if(size > 1){
             sizemsg = "There are $size new snaps!";
           }else{
-            sizemsg = "There is $size new snaps!";
+            sizemsg = "There is $size new snap!";
 
           }
           return InkWell(
@@ -75,7 +73,7 @@ class _MessagesPageState extends State<MessagesPage> {
                     child: Text(
                       message['username'],
                       style: TextStyle(
-                        fontSize: 31,
+                        fontSize: 28,
                       ),
                     ),
                   ),
