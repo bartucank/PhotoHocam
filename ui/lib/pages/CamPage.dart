@@ -1,7 +1,3 @@
-
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:photohocamui/utils/ApiService.dart';
@@ -31,22 +27,14 @@ class _CamPageState extends State<CamPage> {
     if (capturedImage != null) {
       _capturedImagePath = capturedImage.path;
 
-      // Convert the captured image to base64
-      final List<int> imageBytes = await File(_capturedImagePath).readAsBytes();
-      final String base64String = base64Encode(imageBytes);
-
-
-      // Navigate to the view page
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ViewSnapPage(imagePath: base64String),
+          builder: (context) => ViewSnapPage(imagePath: _capturedImagePath),
         ),
       );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {

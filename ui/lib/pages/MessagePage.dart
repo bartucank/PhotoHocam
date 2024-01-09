@@ -63,7 +63,7 @@ class _MessagesPageState extends State<MessagesPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ViewReceivedSnapPage(compressedImageData: compressedImageData, apiService: _apiService,),
+                  builder: (context) => ViewReceivedSnapPage(compressedImageData: compressedImageData, apiService: _apiService, imgid: message['imageList'][0]['id']),
                 ),
               );
             },
