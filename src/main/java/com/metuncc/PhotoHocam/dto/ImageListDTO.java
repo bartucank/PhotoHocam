@@ -19,7 +19,7 @@ public class ImageListDTO {
     /**
      * list of the images sent from the specified user
      */
-    private List<Image> imageList;
+    private List<ImageDTO> imageList;
 
     public String getUsername() {
         return username;
@@ -29,11 +29,11 @@ public class ImageListDTO {
         this.username = username;
     }
 
-    public List<Image> getImageList() {
+    public List<ImageDTO> getImageList() {
         return imageList;
     }
 
-    public void setImageList(List<Image> imageList) {
+    public void setImageList(List<ImageDTO> imageList) {
         this.imageList = imageList;
     }
 }

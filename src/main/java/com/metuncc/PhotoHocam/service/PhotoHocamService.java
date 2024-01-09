@@ -134,14 +134,17 @@ public class PhotoHocamService {
             for (ImageListDTO imglist : result) {
                 if(imglist.getUsername().equals(img.getSender().getUsername())){
                     check = true;
-                    imglist.getImageList().add(img);
+                    ImageDTO imageDTO = new ImageDTO(img.getData(),img.getId());
+                    imglist.getImageList().add(imageDTO);
                 }
             }
             if(!check){
                 ImageListDTO imagedto = new ImageListDTO();
                 imagedto.setUsername(img.getSender().getUsername());
                 imagedto.setImageList(new ArrayList<>());
-                imagedto.getImageList().add(img);
+                ImageDTO imageDTO = new ImageDTO(img.getData(),img.getId());
+                imagedto.getImageList().add(imageDTO);
+                result.add(imagedto);
             }
 
 
