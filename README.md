@@ -31,6 +31,8 @@ PhotoHocam is an application designed for  photo sharing. Users can register, se
 
 - Java 17
 - Gradle
+- Android SDK 34
+
 
 ### Installation
 
@@ -57,6 +59,11 @@ PhotoHocam is an application designed for  photo sharing. Users can register, se
    gradle bootRun
    ```
    The application will be accessible at http://localhost:8080.
+5. Open UI package via Android Studio / VSCode
+6. Edit backend endpoint
+   ```
+   ui/lib/utils/Constants.dart
+   ```
 
 ## Usage
 
@@ -74,7 +81,7 @@ PhotoHocam is an application designed for  photo sharing. Users can register, se
 
 ### Photo Sharing
 
-1. In the friend's profile, click on the photo icon to share a photo.
+1. Click on the "take photo" icon to share a photo.
 
 
 ## License
